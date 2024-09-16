@@ -1,22 +1,24 @@
+
+
 const asyncHandler = require("express-async-handler");
-const User = require("../schemas/userSchema")
+const {userSchema} = require("../schemas/userSchema")
 const bcrypt = require("bcrypt")
 const jwt = require("jsonwebtoken")
 
 const createUser = asyncHandler(async (req,res)=>{
     const {username,email,password} = req.body;
-
+    
     if(!username || !email || !password){
         res.status(400)
         throw new Error("All fields are required.");
     }
-    const availableUser = await User.findOne({email});
+    const availableUser = await userSchema.findOne({where:{email:email}});
     if(availableUser){
         res.status(400)
         throw new Error("User already exists.");
     }
     const hashedPassword = await bcrypt.hash(password,10);
-    const user = await User.create({
+    const user = await userSchema.create({
         username,email,password:hashedPassword
     })
     res.status(201).json(user);
@@ -25,7 +27,7 @@ const createUser = asyncHandler(async (req,res)=>{
 const loginUser = asyncHandler(async (req,res)=>{
     const {email,password}=req.body;
     console.log(email)
-    const user = await User.findOne({email}).lean();
+    const user = await userSchema.findOne({email}).lean();
     console.log(user)
     if(user && (await bcrypt.compare(password,user.password))){
         const token = await jwt.sign({
@@ -49,4 +51,4 @@ const currentUser = asyncHandler(async (req,res)=>{
 })
 
 
-module.exports={createUser,currentUser,loginUser}
+export{createUser,currentUser,loginUser}
