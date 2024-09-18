@@ -9,7 +9,7 @@ const sequelize : Sequelize= new Sequelize('mydb', 'root', 'root', {
 export async function connectDb(): Promise<void> {
     try {
         await sequelize.authenticate();
-        sequelize.sync().then(() => {
+        sequelize.sync({alter:true}).then(() => {
             console.log('Tables synced successfully!');
          }).catch((error) => {
             console.error('Unable to create table : ', error);

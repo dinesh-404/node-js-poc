@@ -1,12 +1,7 @@
-import { Model } from "mongoose";
-import { ModelDefined, ModelStatic, ModelType } from "sequelize";
-
-const mongoose = require("mongoose")
-
 const {sequelize} = require("../config/dbconnection");
 const { DataTypes } = require("sequelize");
 
-const userSchema = sequelize.define("user", {
+export const userSchema = sequelize.define("user", {
     username: {
      type: DataTypes.STRING,
      allowNull: false
@@ -20,5 +15,3 @@ const userSchema = sequelize.define("user", {
      allowNull: false
    }
 });
-
-export {userSchema}

@@ -1,4 +1,5 @@
 import { connectDb } from "./config/dbconnection";
+import { contactRouter } from "./routes/contactRoutes";
 import { userRouter } from "./routes/userRoutes";
 
 export {};
@@ -13,7 +14,7 @@ const app = express();
 const port = 8080;
 connectDb()
 app.use(express.json());
-// app.use("/api/v1", require("./routes/contactRoutes"))
+app.use("/api/v1", contactRouter)
 app.use("/api/v1/user", userRouter)
 app.use(errorHandler)
 
